@@ -1,0 +1,53 @@
+{% extends 'Facturacion/base.html' %} {% block contenido %} {% load static %} {% load crispy_forms_tags %}
+<script type="text/javascript" src="{%static 'javascript/validarjavascript.js'%}"></script>
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel fondo-radial">
+                <div class="x_title">
+                    <h2 class="efecto1">Actualizar Pago</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <br />
+                    <form method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        {% csrf_token %}
+
+                        <table class="table" style="width: 50%">
+                            <thead>
+                                <tr>
+                                    <th>Valor de pago</th>
+                                    <th>Fecha de pago</th>
+                                </tr>
+                        </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ form.valorPago }}</td>
+                                    <td>{{ form.fechaPago }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button type="submit" class="btn btn-primary" style="background-color: #9fc33b; border-color: #69803e;"><i class="fa fa-save" style="padding-right: 10px"></i>Guardar</button>
+                                <a href="{% url 'listapagos' %}" class="btn btn-danger"><i class="fa fa-close" style="padding-right: 10px"></i>Cancelar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+</div>
+<!-- /page content -->
+{% endblock contenido %}

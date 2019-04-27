@@ -1,0 +1,64 @@
+{% extends 'Facturacion/base.html' %}
+{% block contenido %}
+{% load static %}
+<script type="text/javascript" src="{%static 'javascript/validarjavascript.js'%}"></script>
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel fondo-radial">
+                <div class="x_title">
+                    <h2 class="efecto1">Detalle Pago</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <table id="bootstrap-data-table" class="table table-bordered">
+
+                        <tbody>
+                            <tr class="success">
+                                <td><strong>Valor de pago</strong></td>
+                                <td>{{ pago.valorPago }}</td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Fecha de pago</strong></td>
+                                <td>{{ pago.fechaPago }}</td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Nro. compra</strong></td>
+                                <td>{{ pago.compra.numCompra }}</td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Nro. factura</strong></td>
+                                <td>{{ pago.compra.numFactura }} </td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Fecha de compra</strong></td>
+                                <td>{{ pago.compra.fechaCompra }}</td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Proveedor</strong></td>
+                                <td>{{ pago.compra.proveedor }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="box-header with-border">
+                        <a href="{% url 'listapagos' %}" class="btn btn-success">
+                            <span class="glyphicon glyphicon-chevron-left"></span> Regresar
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

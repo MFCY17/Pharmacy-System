@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{#    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">#}
+{#    <!-- Meta, title, CSS, favicons, etc. -->#}
+{#    #}
+{#    <meta http-equiv="X-UA-Compatible" content="IE=edge">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
+
+    <title>Reporte Clientes</title>
+
+    <style>
+        @page {
+            size: a5 ;
+            @frame header_frame {           /* Static Frame */
+                -pdf-frame-content: header_content;
+                left: 100pt; width: 250pt; top: 40pt; height: 60pt;
+            }
+            @frame content_frame {          /* Content Frame */
+                left: 100pt; width: 250pt; top: 30pt; height: 400pt;
+            }
+            @frame footer_frame {           /* Another static Frame */
+                -pdf-frame-content: footer_content;
+                left: 100pt; width: 250pt; top: 550pt; height: 40pt;
+            }
+        }
+    </style>
+
+    <style>
+         body{
+            font-size: small;
+         }
+        .table1 {
+            padding: 2px 1px 0px 1px;
+            vertical-align: center;
+            text-align: center;
+        }
+        .table1_header{
+            text-align: center;
+            font-weight: bold;
+        }
+        .table1_data td {
+            text-align: left;
+        }
+
+        .table2 {
+            border: 1px double black;
+            padding: 2px 1px 0px 1px;
+            vertical-align: center;
+        }
+        .table2_header td{
+            text-align: center;
+            font-weight: bold;
+        }
+        #table3 {
+            border: 1px double black;
+            padding: 2px 1px 0px 1px;
+            text-align: left;
+            vertical-align: center;
+        }
+        .table2_data {
+            text-align: center;
+        }
+        #fin_rol{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- Content for Static Frame 'header_frame' -->
+   <!-- <div id="header_content" style="text-align: center">
+        <strong></strong><br>
+        <i></i>
+    </div>-->
+
+    <!--
+    Etiqueta para imagen
+    <img src="/media/logo_reports.png">
+    -->
+
+    <!-- HTML Content -->
+
+    <!-- DATOS INFORMATIVOS DEL EMPLEADO -->
+       <!-- <table class="table1">
+            <tbody>
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>-->
+    <br>
+    <div>
+        <label style="text-align: left; font-weight: bold;">Fecha de emisión:</label>
+        <td>{{ factura.fecha }}</td>
+        <label style="text-align: left; font-weight: bold;">Cliente:</label>
+        <td>{{ factura.cliente.nombres }} {{ factura.cliente.apellidos }}</td>
+    </div>
+    
+    <table>
+        <tbody>
+            <tr>
+                <td style="text-align: left; font-weight: bold;">RUC/CI:</td>
+                <td>{{ factura.cliente.cedula }}</td>
+                <td style="text-align: right; font-weight: bold;">Teléfono:</td>
+                <td>{{ factura.cliente.telefono }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div>    
+        <label colspan="3" style="text-align: left; font-weight: bold;">Dirección</label>
+        <td>{{factura.cliente.direccion}}</td>
+    </div>   
+                
+    <br>
+        <table class="table2">
+            <head>
+                <tr class="table2_header">
+                    <td width="100">Cant.</td>
+                    <td>Descripción</td>
+                    <td width="150">V.Unitario</td>
+                    <td width="150">V.Venta</td>
+                </tr>
+            </head>
+            <tbody>
+                {% for det in detallesFactura %}
+                    <tr style="text-align: center;">
+                        <td>{{ det.cantidad }}</td>
+                        <td>{{ det.concepto }}</td>
+                        <td>{{ det.valorUnitario }}</td>
+                        <td>{{ det.valorTotal }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    <br>
+
+        <table>
+            <thead>
+                <tr class="table2_header">
+                    <td> </td>
+                    <td> </td>
+                    <td align= right>Subtotal $:</td>
+                    <td>{{ factura.subtotal }}</td>
+                </tr>
+            </thead>
+            <thead>
+                <tr class="table2_header">
+                    <td> </td>
+                    <td> </td>
+                    <td align= right>Descuento $:</td>
+                    <td>{{ factura.descuento }}</td>
+                </tr>
+            </thead>
+            <thead>
+                <tr class="table2_header">
+                    <td> </td>
+                    <td> </td> 
+                    <td align= right>Iva 0% $:</td>
+                    <td>{{ factura.iva0 }}</td>
+                </tr>
+            </thead>
+            <thead>
+                <tr class="table2_header">
+                    <td> </td>
+                    <td> </td>
+                    <td align= right>Iva 12% $:</td>
+                    <td>{{ factura.iva12 }}</td>
+                </tr>
+            </thead>
+            <thead>
+                <tr class="table2_header">
+                    <td> </td>
+                    <td> </td>
+                    <td align= right>Valor Total $:</td>
+                    <td>{{ factura.valorTotal }}</td>
+                </tr>
+            </thead>
+            
+        </table>
+
+    <br>
+
+   <table>
+        <tbody>
+            <tr>
+                <td class="table1_header">
+                    <br>
+                    <br>
+                    .............................<br>
+                    FIRMA AUTORIZADA
+                </td>
+                <td class="table1_header">
+                    <br>
+                    <br>
+                    .............................<br>
+                    RECIBI CONFORME
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+{#        <!-- MENSAJE FINAL  -->#}
+{#        <div id="fin_rol">#}
+{#            ESTE DOCUMENTO TIENE VALIDEZ LEGAL AL ESTAR SELLADO POR LA DIRECCIÓN DE RECURSOS HUMANOS#}
+{#        </div>#}
+
+    <!-- Content for Static Frame 'footer_frame' -->
+   <!-- <div id="footer_content">
+        Página <pdf:pagenumber> de <pdf:pagecount>
+    </div>-->
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+{% extends 'Facturacion/base.html' %}
+{% load staticfiles %}
+{% block contenido %}
+ {% load crispy_forms_tags %}
+
+
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+
+
+<!--Modal Confrimar Crear Proveedor -->
+ <!-- Modal Confirmar Crear Proveedor -->
+    <div id="crearproveedor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">
+                <span aria-hidden="true" class="fa fa-info-circle"></span><strong> Información</strong>
+            </h4>
+          </div>
+          <div class="modal-body">
+              <h4>El proveedor no existe. ¿Deseas crear uno nuevo?</h4>
+          </div>
+          <div class="modal-footer">
+            <button id="btnCancelar" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <a id="btnCrearCliente" type="button" href="{% url 'proveedor' %}" target="_blank" class="btn btn-primary">Si, crear</a>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+      <!-- Modal Notificaciones -->
+    <div id="notificacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 id="tituloModal" class="modal-title"></h4>
+          </div>
+          <div id="cuerpoModal" class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+
+            </div>
+
+{#            <div class="title_right">#}
+{#                <div class="col-md-12 col-sm-12 col-xs-12 form-group pull-right top_search">#}
+{#                    <div class="input-group">#}
+{#                        <input type="text" class="form-control" placeholder="Buscar...">#}
+{#                        <span class="input-group-btn">#}
+{#                            <button class="btn btn-default" type="button">Ir!</button>#}
+{#                        </span>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <h2 class="efecto1">Compra N° <strong id="nroCompra">{{ numeroCompra }}</strong></h2>
+                <div class="x_panel fondo-radial">              
+                    <div class="x_title">
+                        <h2 class="efecto1">Datos del Proveedor</h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li title="Minimizar"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-group col-sm-6">
+                            <label for="rucp">Ruc*:</label>
+                            <input id="rucp" type="text" autofocus class="form-control" placeholder="Escriba aquí...">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="dis">Distribuidora*:</label>
+                            <input id="dis" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="telem">Teléfono empresa*:</label>
+                            <input id="telem" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="dir">Dirección:</label>
+                            <input id="dir" type="text" class="form-control">
+                        </div>
+                        
+                         <div class="form-group col-sm-6" enctype="multipart/form-data" >
+                            <label for="txtImag">Comprobante:</label>
+                            <input id="txtImage" type="file" class="form-control">
+                        </div>
+                        
+{% endblock contenido %}
+
+{% block javascript %}
+    {{ block.super }}
+    <!-- Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+     <script>
+      var pkProveedor = 0;
+
+      $('#rucp').keyup(function () {
+                var ruc = $(this).val();
+                if (ruc.length == 13) {
+                    $.ajax({
+                        data: {'ruc': ruc},
+                        method: 'POST',
+                        url: '{% url "cargarproveedor" %}',
+                        success: function (data) {
+                            if (data.length > 0) {
+                                pkProveedor = data[0].id;
+                                $('#dis').val(data[0].distribuidora);
+                                $('#telem').val(data[0].telefono_empresa);
+                                $('#dir').val(data[0].direccion);
+                            } else {
+                                $('#crearproveedor').modal('show');
+                            }
+                        },
+                        error: function () {
+                            lanzarNotificacion('fa fa-exclamation-triangle','Error Inesperado','Por favor, consulte con el administrador.')
+                        }
+                    });
+                } else {
+                    limpiarDatosProveedor();
+                }
+            });
+
+
+            $('#btnCrearProveedor').click(function () {
+                $('#crearproveedor').modal('hide');
+            });
+
+
+            $('#btnCancelar').click(function () {
+                $('#rucp').val('');
+                limpiarDatosProveedor();
+            });
+
+             function limpiarDatosProveedor() {
+                $('#dis').val('');
+                $('#telem').val('');
+                $('#dir').val('');
+            }
+       
+
+     </script>
+
+{% endblock %}

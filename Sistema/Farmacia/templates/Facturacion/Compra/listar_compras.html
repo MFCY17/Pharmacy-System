@@ -1,0 +1,77 @@
+{% extends 'Facturacion/base.html' %} {% block contenido %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2 class="efecto1">Lista Compras</h2>
+                            <div style="text-align: right;">
+                                <a href="{% url 'reporteclientes' %}" class="btn btn-primary" style="background-color: #42a4f4; border-color: #69803e;">Reporte</a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        {% if messages %}
+                        <div class="col-md-12col-sm-12 col-xs-12 " style="    color: #a82823;" align=" left">
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li {% if message.tags %} class="{{ message.tags }}" {% endif %} >
+                                    {{ message }}
+                                </li>
+                                    {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <div class="x_content">
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nro. compra</th>
+                                        <th>Nro factura</th>
+                                        <th>Total compra</th>
+                                        <th>Forma pago</th>
+                                        <th>Estado pago</th>
+                                        <th>Fecha compra</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if object_list %} {% for compra in object_list %}
+                                    <tr>
+                                        <td>{{ compra.numCompra }} </td>
+                                        <td>{{ compra.numFactura }} </td>
+                                        <td>{{ compra.totalCompra }} </td>
+                                        <td>{{ compra.formaPago }} </td>
+                                        <td>{{ compra.estadoPago }} </td>
+                                        <td>{{ compra.fechaCompra }} </td>
+                                        <td>
+                                            <a href="{% url 'detallecompra' compra.id %}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
+                                            <a href="{% url 'editarcompra' compra.id %}" class="btn btn-primary btn-xs" style="background-color: #9fc33b; border-color: #69803e;"><i class="fa fa-pencil"></i></a>
+                                            <a href="{% url 'eliminarcompra' compra.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %} {% else %}
+                                    <th>
+                                        <td COLSPAN=6 style=" text-align: center;">"NO HAY REGISTROS PARA MOSTRAR" </td>
+                                    </th>
+                                    {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+        {% endblock contenido %}

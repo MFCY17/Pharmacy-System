@@ -1,0 +1,280 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="{%static 'static_login/img/logoico.png'%}" />
+    <title>{% block title %} Farmacia Daniel Álvarez {% endblock %}</title>
+    <!-- Bootstrap -->
+    <link href="{%static 'static_plantilla_base/vendors/bootstrap/dist/css/bootstrap.min.css'%}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{%static 'static_plantilla_base/vendors/font-awesome/css/font-awesome.min.css'%}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{%static 'static_plantilla_base/vendors/nprogress/nprogress.css'%}" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="{%static 'static_plantilla_base/vendors/iCheck/skins/flat/green.css'%}" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="{%static 'static_plantilla_base/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css'%}" rel="stylesheet">
+    <!-- JQVMap -->
+    <link href="{%static 'static_plantilla_base/vendors/jqvmap/dist/jqvmap.min.css'%}" rel="stylesheet" />
+    <!-- bootstrap-daterangepicker -->
+    <link href="{%static 'static_plantilla_base/vendors/bootstrap-daterangepicker/daterangepicker.css'%}" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="{%static 'static_plantilla_base/build/css/custom.min.css'%}" rel="stylesheet">
+    <!-- Datatables -->
+    <link href="{%static 'static_plantilla_base/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{%static 'static_plantilla_base/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{%static 'static_plantilla_base/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{%static 'static_plantilla_base/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{%static 'static_plantilla_base/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css'%}" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href="{%static 'static_plantilla_base/vendors/fullcalendar/dist/fullcalendar.min.css'%}" rel="stylesheet">
+    <link href="{%static 'static_plantilla_base/vendors/fullcalendar/dist/fullcalendar.print.css'%}" rel="stylesheet" media="print">
+    <!-- bootstrap-daterangepicker -->
+    <link href="{%static 'static_plantilla_base/vendors/bootstrap-daterangepicker/daterangepicker.css'%}" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="{%static 'static_plantilla_base/vendors/select2/dist/css/select2.min.css'%}" rel="stylesheet">
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+                    <div class="clearfix"></div>
+                    <!-- Este bloque es el perfil -->
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="profile_info">
+                            <a href="{% url 'base' %}"><img src="{%static 'static_login/img/farmacia.png'%}" style="width: 180px;"> </a>
+                            <h2></h2>
+                        </div>
+                    </div>
+                    <!-- /menu profile quick info -->
+                    <!-- sidebar menu -->
+                    <!-- este bloque contiene todo el menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <center>
+                                <h3 id="username">Bienvenido:{{user.username|capfirst}}</h3>
+                            </center>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="{% url 'base'%}"> <i class="fa fa-home"></i> Inicio <span></span></a>
+                                </li>
+                                <li><a><i class="fa fa-users"></i> Clientes <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'cliente'%}">Nuevo Cliente</a></li>
+                                        <li><a href="{% url 'listaclientes'%}">Lista Clientes</a></li>
+                                    </ul>
+                                </li>
+                                <li><a id="proveedores" style="display: none;"><i class="fa fa-briefcase"></i> Proveedores <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'proveedor'%}">Nuevo Proveedor</a></li>
+                                        <li><a href="{% url 'listaproveedores'%}">Lista Proveedores</a></li>
+                                    </ul>
+                                </li>
+                                 <li><a id="categoriapresentacion" style="display: none;"><i class="fa fa-sitemap"></i> Categoría y Presentación <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'categoria' %}">Nueva Categoría</a></li>
+                                        <li><a href="{% url 'listacategorias' %}">Lista Categorías</a></li>
+                                        <li><a href="{% url 'presentacion' %}">Nueva Presentación</a></li>
+                                        <li><a href="{% url 'listapresentaciones' %}">Lista Presentación</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-cubes"></i> Productos <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'producto'%}">Nuevo Producto</a></li>
+                                        <li><a href="{% url 'listaproductos' %}">Lista Productos</a></li>
+                                    </ul>
+                                </li>
+                               
+                                <li><a id="compras" style="display: none;"><i class="fa fa-credit-card"></i> Compra <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'compra'%}">Nueva Compra</a></li>
+                                        <li><a href="{% url 'listacompras'%}">Lista Compras</a></li>
+                                        <li><a href="{% url 'listapagos'%}">Lista Pagos</a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a><i class="fa fa-shopping-cart"></i>Ventas<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'realizarventa' %}">Nueva venta</a></li>
+                                        <li><a href="{% url 'listarventas' %}">Lista ventas</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="menu_section">
+                            <ul class="nav side-menu">
+                                <li><a id="reportes" style="display: none;"><i class="fa fa-bar-chart-o"></i>Reportes<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'reporteproductos' %}">Reporte Inventario Productos</a></li>
+                                        <li><a href="#">Reporte Compras</a></li>
+                                        <li><a href="{% url 'reporte_ventas' %}">Reporte Ventas</a></li>
+                                    </ul>
+                                </li>
+                                <li><a id="usuarios" style="display: none;"><i class="fa fa-user-md"></i> Administrar Usuarios <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'usuario' %}">Nuevo Usuario</a></li>
+                                        <li><a href="{%  url 'listausuarios' %}">Lista Usuarios</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-wrench"></i>Configuración<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{% url 'perfil_empresa' %}">Perfil de la empresa</a></li>
+                                        <li><a href="#">Perfil del usuario</a></li>
+                                    </ul>
+                                </li>
+                                <li><a><i class="fa fa-cog"></i> Respaldar y Restaurar<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="#">Copia de Seguridad</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /sidebar menu -->
+                </div>
+            </div>
+            <!-- top navigation -->
+            <!-- este bloque contien la parte de cerrar secion -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <!--  <img src="{%static 'static_plantilla_base/production/images/logoico.png'%}" alt="" >-->Administración
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a href="#"> Perfil</a></li>
+                                    <li><a href="{% url 'logout'%}" onClick='javascript:parent.window.close()'><i class="fa fa-sign-out pull-right"></i>Cerrar Sesión</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            {% block contenido %}
+            <!-- page content -->
+            <div class="right_col" role="main">
+                <center>
+                    <img src="{%static 'static_plantilla_base/production/images/farmacia.png'%}" style="width: 990px; padding-top: 150px; ">
+                </center>
+                <!-- /page content -->
+            </div>
+            {% endblock contenido %}
+        </div>
+    </div>
+
+{% block javascript %}
+    <!-- jQuery -->
+    <script src="{%static 'static_plantilla_base/vendors/jquery/dist/jquery.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/jquery.formset/jquery.formset.js'%}"></script>e
+    <!-- Bootstrap -->
+    <script src="{%static 'static_plantilla_base/vendors/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+    <!-- FastClick -->
+    <script src="{%static 'static_plantilla_base/vendors/fastclick/lib/fastclick.js'%}"></script>
+    <!-- NProgress -->
+    <script src="{%static 'static_plantilla_base/vendors/nprogress/nprogress.js'%}"></script>
+    <!-- Chart.js -->
+    <script src="{%static 'static_plantilla_base/vendors/Chart.js/dist/Chart.min.js'%}"></script>
+    <!-- gauge.js -->
+    <script src="{%static 'static_plantilla_base/vendors/gauge.js/dist/gauge.min.js'%}"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="{%static 'static_plantilla_base/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js'%}"></script>
+    <!-- iCheck -->
+    <script src="{%static 'static_plantilla_base/vendors/iCheck/icheck.min.js'%}"></script>
+    <!-- Skycons -->
+    <script src="{%static 'static_plantilla_base/vendors/skycons/skycons.js'%}"></script>
+    <!-- Flot -->
+    <script src="{%static 'static_plantilla_base/vendors/Flot/jquery.flot.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/Flot/jquery.flot.pie.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/Flot/jquery.flot.time.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/Flot/jquery.flot.stack.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/Flot/jquery.flot.resize.js'%}"></script>
+    <!-- Flot plugins -->
+    <script src="{%static 'static_plantilla_base/vendors/flot.orderbars/js/jquery.flot.orderBars.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/flot-spline/js/jquery.flot.spline.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/flot.curvedlines/curvedLines.js'%}"></script>
+    <!-- DateJS -->
+    <script src="{%static 'static_plantilla_base/vendors/DateJS/build/date.js'%}"></script>
+    <!-- JQVMap -->
+    <script src="{%static 'static_plantilla_base/vendors/jqvmap/dist/jquery.vmap.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/jqvmap/dist/maps/jquery.vmap.world.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js'%}"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="{%static 'static_plantilla_base/vendors/moment/min/moment.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/bootstrap-daterangepicker/daterangepicker.js'%}"></script>
+    <!-- bootstrap-modal-forms -->
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+    <!-- Datatables -->
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-buttons/js/dataTables.buttons.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-buttons/js/buttons.flash.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-buttons/js/buttons.html5.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-buttons/js/buttons.print.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/datatables.net-scroller/js/dataTables.scroller.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/jszip/dist/jszip.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/pdfmake/build/pdfmake.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/pdfmake/build/vfs_fonts.js'%}"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="{%static 'static_plantilla_base/build/js/custom.min.js'%}"></script>
+    <!-- FullCalendar -->
+    <script src="{%static 'static_plantilla_base/vendors/moment/min/moment.min.js'%}"></script>
+    <script src="{%static 'static_plantilla_base/vendors/fullcalendar/dist/fullcalendar.min.js'%}"></script>
+    <script>
+        $(document).ready(
+            function() {
+                var usuario= $('#username').text();
+                $.ajax({
+                  type: "POST",
+                    url:'{% url 'validar_rol' %}',
+                    data:{username: usuario},
+                    success: function(result){
+                        if(result=="True") {
+                            $('#reportes').css('display', 'block');
+                            $('#compras').css('display', 'block');
+                            $('#proveedores').css('display', 'block');
+                            $('#categoriapresentacion').css('display', 'block');
+                            $
+
+                        }
+                        else {
+                            $('#reportes').css('display', 'none');
+                            $('#compras').css('display', 'none');
+                            $('#proveedores').css('display', 'none');
+                            $('#categoriapresentacion').css('display', 'none');
+
+
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                      console.log(jqXHR);
+                    }
+                });
+            }
+        );
+    </script>
+{% endblock %}
+</body>
+
+</html>

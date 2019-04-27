@@ -1,0 +1,71 @@
+{% extends 'Facturacion/base.html' %} {% block contenido %} {% load crispy_forms_tags %} 
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/media/admin/js/core.js"></script>
+<script type="text/javascript"
+src="/media/admin/js/admin/RelatedObjectLookups.js"></script>
+
+{% load i18n %}
+
+
+{{form.media}}
+<form name="form" action="." method="post" enctype="multipart/form-data">
+    <link href="/media/admin/css/widgets.css" rel="stylesheet" type="text/css">
+    <link href="/media/css/forms.css" rel="stylesheet" type="text/css">
+    <link href="/media/css/estilo_general.css" rel="stylesheet"
+    type="text/css">
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel fondo-radial">
+                <div class="x_title">
+                    <h2 class="efecto1">Nuevo Producto</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                {% if messages %}
+                <div class="col-md-12col-sm-12 col-xs-12 " style="    color: #a82823;" align=" left">
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                            {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="x_content">
+                    <br />
+                    <form method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        {% csrf_token %} {{ form|crispy}}
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button type="submit" class="btn btn-primary" style="background-color: #9fc33b; border-color: #69803e;"><i class="fa fa-save" style="padding-right: 10px;top: -15px;"></i>Guardar</button>
+                            </div>
+
+                            <a href="{% url 'listaproductos' %}" class="btn btn-danger"><i class="fa fa-close" style="padding-right: 10px"></i>Cancelar</a>
+
+                            <!--<div class="col-sm-2" style="top: -923px;right: -515px">
+                                <a href="{% url 'presentacion' %}" class="btn btn-primary">+</a>
+                            </div>
+
+                            <div class="col-sm-2" style="top: -852px;right: -343px">
+                                <a href="{% url 'categoria' %}" class="btn btn-primary">+</a>
+                            </div>-->
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+</div>
+<!-- /page content -->
+
+{% endblock contenido %}

@@ -1,0 +1,625 @@
+{% extends 'Facturacion/base.html' %}
+{% load staticfiles %}
+{% block contenido %}
+
+    <!-- Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+
+    <!-- Modal Confirmar Crear Cliente -->
+    <div id="crearcliente" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">
+                <span aria-hidden="true" class="fa fa-info-circle"></span><strong> Información</strong>
+            </h4>
+          </div>
+          <div class="modal-body">
+              <h4>El cliente no existe. ¿Desea crear uno nuevo?</h4>
+          </div>
+          <div class="modal-footer">
+            <button id="btnCancelar" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <a id="btnCrearCliente" type="button" href="{% url 'cliente' %}" target="_blank" class="btn btn-primary">Si, crear</a>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <!-- Modal Notificaciones -->
+    <div id="notificacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 id="tituloModal" class="modal-title"></h4>
+          </div>
+          <div id="cuerpoModal" class="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+
+            </div>
+
+{#            <div class="title_right">#}
+{#                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">#}
+{#                    <div class="input-group">#}
+{#                        <input type="text" class="form-control" placeholder="Buscar...">#}
+{#                        <span class="input-group-btn">#}
+{#                            <button class="btn btn-default" type="button">Ir!</button>#}
+{#                        </span>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+        </div>
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel fondo-radial">
+                    <div class="x_title">
+                        <h2 class="efecto1">Datos del Cliente</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-group col-sm-6">
+                            <label for="ced">Cédula*:</label>
+                            <input id="ced" type="text" autofocus class="form-control" placeholder="Escriba aquí...">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="nom">Nombres*:</label>
+                            <input id="nom" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="ape">Apellidos*:</label>
+                            <input id="ape" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="dir">Dirección:</label>
+                            <input id="dir" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="tel">Teléfono:</label>
+                            <input id="tel" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group col-sm-6">
+                            <label for="email">E-mail:</label>
+                            <input id="email" type="email" class="form-control">
+                        </div>
+                    </div>
+                
+            </div>
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel fondo-radial">
+                    <div class="x_title">
+                        <h2 class="efecto1">Método de Pago</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-group col-sm-12 col-md-12 col-xs-12">
+                            <label for="selMetodoPago">Método:</label>
+                            <select id="selMetodoPago" name="metodo" class="form-control">
+                                <option value="EFECTIVO" selected>EFECTIVO</option>
+                               
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- SELECCIONAR PRODUCTOS -->
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel fondo-radial">
+                    <div class="x_title">
+                        <h2 class="efecto1">Seleccionar Productos</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-group col-xs-9 col-sm-6 col-md-6">
+                            <label for="selProductos">Productos:</label>
+                            <select id="selProductos" name="producto" style="width: 100%">
+                                <option></option>
+                                {% for pro in productos %}
+                                    <option value="{{ pro.pk }},{{ pro.stock }}">{{ pro.codigo_producto }} - {{ pro.nombre_producto }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group col-xs-3 col-sm-4 col-md-4">
+                            <label for="tipoArticulo" style="height: 19px; padding-left: 81px;">Artículo:</label>
+                            <select id="tipoArticulo" name="presentacion" class="form-control" style="margin-left: 80px;">
+                                <option  value="MEDICAMENTO" selected>Medicamento</option>
+                                <option value="OTRO">Otro</option>
+                            </select>
+                        </div>
+
+                       <div class="form-group col-xs-3 col-sm-4 col-md-4">
+                            <label for="presentacionPro" style="height: 19px; padding-left: 81px;">Presentación:</label>
+                            <select id="presentacionPro" name="presentacion" class="form-control" style="margin-left: 80px;">
+                                <option  value="0" selected>Unidad</option>
+                                <option value="1">Caja</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group col-xs-3 col-sm-2 col-md-2">
+                            <label for="cantidadPro">Cantidad:</label>
+                            <input id="cantidadPro" class="form-control" type="number" value="1" min="1">
+                        </div>
+
+                        
+
+                        <div class="form-group col-xs-8 col-sm-8 col-md-8 text-left" style="left: 100px;">
+                            <button id="btnAddProFactura" class="btn btn-primary" title="Agregar a Factura" disabled>
+                                <span aria-hidden="true" class="fa fa-calculator"></span> Agregar</button>
+                            <button id="btnActualizarPro" class="btn btn-dark" title="Actualizar Productos">
+                                <span aria-hidden="true" class="fa fa-refresh"></span> Actualizar</button>
+                            <a id="nuevoPro" href="{% url 'producto' %}" target="_blank" class="btn btn-dark" title="Nuevo Producto">
+                                <span aria-hidden="true" class="fa fa-plus"></span> Crear</a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FACTURA -->
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2 class="efecto1">Factura N° <strong id="nroFactura">{{ numeroFactura }}</strong></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="form-group">
+                            <table id="productos" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">Cantidad</th>
+                                        <th class="text-center">Descripción</th>
+                                        <th class="text-center">Valor Unitario</th>
+                                        <th class="text-center">Valor Venta</th>
+                                        <th class="text-center">IVA</th>
+                                        <th class="text-center">PVP + IVA</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="ln_solid"></div>
+
+                        <div class="form-group">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">SUBTOTAL</th>
+                                        <th class="text-center">DESCUENTO</th>
+                                        <th class="text-center">IVA 0%</th>
+                                        <th class="text-center">IVA 12%</th>
+                                        <th class="text-center">V. TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input id="subtotal" class="form-control" value="0.00" readonly></td>
+                                        <td><input id="descuento" type="number" class="form-control" value="0.00" step="0.01"></td>
+                                        <td><input id="iva0" class="form-control" value="0.00" readonly></td>
+                                        <td><input id="iva12" class="form-control" value="0.00" readonly></td>
+                                        <td><input id="vTotal" class="form-control" value="0.00" readonly></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group text-center">
+                            
+                            <button id="btnGuardarImprimir" class="btn btn-primary" title="Guarda e imprime la factura">
+                                <span aria-hidden="true" class="fa fa-print"></span> Guardar e imprimir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- page content -->
+
+{% endblock contenido %}
+
+{% block javascript %}
+    {{ block.super }}
+    <!-- Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+    <script>
+        $(function () {
+
+            const IVA12 = 0;
+            var stock = 0;
+            var valTotalIva = 0;
+            var sumaIva= 0.00;
+            var pkAuxiliar = [];//Respaldar los pk's de los productos en la factura
+            var tablaFactura = $('#productos').DataTable({
+                "data": [],
+                    "columnDefs": [
+                        {
+                            "targets": -1,
+                            "data": null,
+                            "defaultContent": "<div class='text-center'><button class='btn btn-primary btnRemovePro btn-xs' title='Quitar de la Factura'>" +
+                                "<span aria-hiden='true' class='fa fa-trash'></span> Quitar</button></div>"
+                        }
+                    ],
+                    "columns":[
+                        { "data": "cantidad" },
+                        { "data": "nombre_producto" },
+                        { "data": "precio_producto" },
+                        { "data": "valor_venta" },
+                        { "data": "IVA" },
+                        { "data": "PVP_IVA" },
+                        { "data": null },
+                    ]
+                });
+
+
+            $('#selProductos').select2({
+                placeholder: 'Describa aquí el producto...',
+                allowClear: 'true',
+            });
+
+
+            $('#productos tbody').on( 'click', '.btnRemovePro', function () {
+                let productoSel = tablaFactura.row($(this).parents('tr'));
+                let data = productoSel.data();
+                let pkProducto = data.pk;
+                let indice = pkAuxiliar.indexOf(pkProducto);
+                delete pkAuxiliar[indice];//Eliminar también del arreglo el producto
+                productoSel.remove().draw(false);
+
+                subtotal -= parseFloat(data.valor_venta);
+                sumaIva -= parseFloat(data.IVA);
+                $('#subtotal').val(redondear2Dec(subtotal));
+                valTotalIva -= parseFloat(data.valtotalIva);
+
+                calcularFactura();
+
+                if ($('#selMetodoPago').val() == 'CRÉDITO' && subtotal <= 0){
+                    $('#btnVerAmortizacion').attr('disabled', true);
+                }
+            });
+
+            var pkCliente = 0;
+
+            $('#ced').keyup(function () {
+                var cedula = $(this).val();
+                if (cedula.length == 10) {
+                    $.ajax({
+                        data: {'cedula': cedula},
+                        method: 'POST',
+                        url: '{% url "cargarcliente" %}',
+                        success: function (data) {
+                            if (data.length > 0) {
+                                pkCliente = data[0].id;
+                                $('#nom').val(data[0].nombres);
+                                $('#ape').val(data[0].apellidos);
+                                $('#dir').val(data[0].direccion);
+                                $('#tel').val(data[0].telefono);
+                                $('#email').val(data[0].email);
+                            } else {
+                                $('#crearcliente').modal('show');
+                            }
+                        },
+                        error: function () {
+                            lanzarNotificacion('fa fa-exclamation-triangle','Error Inesperado','Por favor, consulte con el administrador.')
+                        }
+                    });
+                } else {
+                    limpiarDatosCliente();
+                }
+            });
+
+
+            $('#btnCrearCliente').click(function () {
+                $('#crearcliente').modal('hide');
+            });
+
+
+            $('#btnCancelar').click(function () {
+                $('#ced').val('');
+                limpiarDatosCliente();
+            });
+
+
+            $('#btnActualizarPro').click(function () {
+                cargarProductos();
+            });
+
+
+            $('#selProductos').change(function () {
+                var pk_stock = $(this).val();
+                if (pk_stock != '') {
+                    stock = parseInt(pk_stock.split(',')[1]);//Se guarda el stock actual del producto seleccionado
+                    $('#btnAddProFactura').attr('disabled', false);
+                    $('#cantidadPro').val(1);
+                    $('#cantidadPro').attr('max', stock);
+                }else{
+                    $('#btnAddProFactura').attr('disabled', true);
+                    $('#cantidadPro').val(1);
+                }
+            });
+            //habilitar  
+            $('#creditoMeses').keyup(function () {
+                var meses1 = parseInt($('#creditoMeses').val());
+                if (meses1 > 3){
+                    $('#valorAdicional').attr('disabled', false);
+                }else {
+                    $('#valorAdicional').attr('disabled', true);
+                }
+            })
+            
+            $('#selMetodoPago').change(function () {
+                var metodo = $(this).val();
+                if (metodo == 'CRÉDITO') {
+                    $('#creditoMeses').attr('disabled', false);
+                    $('#creditoFechaInicial').attr('disabled', false);
+                    if (subtotal > 0){
+                        $('#btnVerAmortizacion').attr('disabled', false);
+                    }
+
+
+                    $('#btnGuardar').attr('disabled', false);
+                    $('#btnGuardarImprimir').attr('disabled', true);
+                }else{
+                    $('#creditoMeses').attr('disabled', true);
+                    $('#creditoInteres').attr('disabled', true);
+                    $('#creditoFechaInicial').attr('disabled', true);
+                    $('#btnVerAmortizacion').attr('disabled', true);
+
+                    $('#btnGuardar').attr('disabled', true);
+                    $('#btnGuardarImprimir').attr('disabled', false);
+                }
+            });
+
+
+            $('#btnVerAmortizacion').click(function () {
+                
+                let tablaHtml = '';
+                
+                let cuotaInicial = parseFloat($('#cuotaInicial').val());
+                let meses = parseInt($('#creditoMeses').val());
+                let valorAdicional = parseFloat($('#valorAdicional').val());
+                if (meses > 3) {
+                    valorAdicional = valorAdicional * (meses - 3);
+                }    
+                let valorTotalVenta = (valorAdicional + valorTotal) - cuotaInicial;
+                let saldo = valorTotalVenta;
+                let cuotaMensual = valorTotalVenta / meses;
+
+
+                for (let i = 1; i <= meses ; i++) {
+                    saldo -= cuotaMensual;
+                    tablaHtml+='<tr>' +
+                        '<td class="text-center">'+i+'</td>' +
+                        '<td class="text-center">'+redondear2Dec(cuotaMensual)+'</td>' +
+                        '<td class="text-center">'+redondear2Dec(saldo)+'</td>' +
+                        '</tr>';
+                }
+
+                $('#amortizacion #deudaInicial').val(redondear2Dec(valorTotalVenta));
+                $('#amortizacion table tbody').html(tablaHtml);
+                $('#amortizacion').modal('show');
+            });
+
+
+            var subtotal = 0.00;
+            var descuento = 0.00;
+            var iva12 = 0.00;
+            var valorTotal = 0.00;
+
+            $('#btnAddProFactura').click(function () {
+                var cantidad = $('#cantidadPro').val();
+                var pkProducto = parseInt($('#selProductos').val().split(',')[0]);
+                var presentacion = parseInt($('#presentacionPro').val());
+                var tipoArticulo = $('#tipoArticulo').val();
+                if (cantidad <= stock){
+                    if (!existeEnFactura(pkProducto)){//Si no se ha incluido en la factura
+                        $.ajax({
+                            data:{'cantidad':cantidad, 'pkProducto':pkProducto, 'presentacion':presentacion, 'tipoArticulo': tipoArticulo},
+                            type:'POST',
+                            url:'{% url "obtenerproducto" %}',
+                            success: function(data){
+                                tablaFactura.rows.add(data).draw(false);
+                                $('#selProductos').val(null).trigger('change');//Hacemos clear al select
+                                $('#btnAddProFactura').attr('disabled', true);
+                                $('#cantidadPro').val(1);
+                                pkAuxiliar.push(pkProducto);
+
+                                subtotal += parseFloat(data[0].valor_venta);
+                                $('#subtotal').val(redondear2Dec(subtotal));
+
+                                sumaIva += parseFloat(data[0].IVA)
+                                $('#iva12').val(redondear2Dec(sumaIva));
+
+                                descuento = parseFloat($('#descuento').val());
+                                valTotalIva += parseFloat(data[0].valtotalIva);
+
+                                console.log(valTotalIva);
+                                calcularFactura();
+
+                                if ($('#selMetodoPago').val() == 'CRÉDITO' && subtotal > 0){
+                                    $('#btnVerAmortizacion').attr('disabled', false);
+                                    $('#cuotainicial').attr('disabled', false);
+                                }
+                            },
+                            error: function () {
+                                lanzarNotificacion('fa fa-exclamation-triangle','Error Inesperado','Por favor, consulte con el administrador.')
+                            }
+                        });
+                    } else {
+                        lanzarNotificacion('fa fa-exclamation-triangle','Producto duplicado','El producto seleccionado ya consta en la factura.')
+                    }
+                }else{
+                    lanzarNotificacion('fa fa-exclamation-triangle','Cantidad inválida','La cantidad ingresada excede a la del stock.')
+                }
+            });
+
+
+            $('#descuento').focusout(function () {
+                if ($(this).val() == ''){
+                    $(this).val('0.00');
+                }
+            });
+
+
+            $('#descuento').on('keyup change',function () {
+                descuento = ($(this).val() != '')?parseFloat($(this).val()):0.00;
+                calcularFactura();
+            });
+
+
+            function calcularFactura(){
+
+                valorTotal = (subtotal - descuento) + sumaIva;
+                $('#iva12').val(redondear2Dec(sumaIva));
+                $('#vTotal').val(redondear2Dec(valorTotal));
+            }
+
+
+            $('#btnGuardarImprimir').click(function () {
+                iva12 = sumaIva;
+                let datosTabla = tablaFactura.rows().data();//Obtengo todos los datos de la tabla
+                let detallesVenta = $.makeArray();
+                for (let i = 0; i < datosTabla.length; i++) {
+                    detallesVenta.push([datosTabla[i].cantidad, datosTabla[i].pk, datosTabla[i].valor_venta]);
+                }
+                console.log(detallesVenta);
+                $.ajax({
+                    data: {'detalleVenta':JSON.stringify(detallesVenta),
+                        'tipoPago':$('#selMetodoPago').val(),
+                        'pkCliente':pkCliente, 'subtotal':subtotal,
+                        'valorTotal':valorTotal, 'iva12':iva12,
+                        'descuento':descuento, 'nroFactura':$('#nroFactura').text()
+                    },
+                    url: "{% url 'guardarventa' %}",
+                    type: 'POST',
+                    success: function (data) {  //Si _todo sale bien
+                        window.open('{% url 'listarventas' %}', '_self');
+                    },
+                    error: function () {    //Si algo sale mal
+                        lanzarNotificacion('fa fa-exclamation-triangle','Error Inesperado','Por favor, consulte con el administrador.')
+                    }
+                });
+            });
+
+
+            $('#btnGuardar').click(function () {
+                let datosTabla = tablaFactura.rows().data();//Obtengo todos los datos de la tabla
+                let detallesVenta = $.makeArray();
+                for (let i = 0; i < datosTabla.length; i++) {
+                    detallesVenta.push([datosTabla[i].cantidad, datosTabla[i].pk, datosTabla[i].valor_venta]);
+                }
+                $.ajax({
+                    data: {'detalleVenta':JSON.stringify(detallesVenta),
+                        'tipoPago':$('#selMetodoPago').val(),
+                        'pkCliente':pkCliente, 'subtotal':subtotal,
+                        'valorTotal':valorTotal, 'iva12':iva12,
+                        'descuento':descuento, 'meses':$('#creditoMeses').val(),
+                        'fechaInicial':$('#creditoFechaInicial').val(),
+                        'valorAdicional':$('#valorAdicional').val(), 
+                        'cuotaInicial':$('#cuotaInicial').val(), 'nroFactura':$('#nroFactura').text()
+                    },
+                    url: "#",
+                    type: 'POST',
+                    success: function (data) {  //Si _todo sale bien
+                        window.open('{% url 'listarventas' %}', '_self');
+                    },
+                    error: function () {    //Si algo sale mal
+                        lanzarNotificacion('fa fa-exclamation-triangle','Error Inesperado','Por favor, consulte con el administrador.')
+                    }
+                });
+            });
+
+
+            function cargarProductos(){
+                $.ajax({
+                    url: '{% url "cargarproductos" %}',
+                    type: 'POST',
+                    success: function (data) {
+                        $('#selProductos').html('<option></option>'); //Borro los items anteriores para cargar los nuevos
+                        for (let i = 0; i < data.length; i++) {
+                            let newOption = new Option(data[i].codigo_producto + ' - ' + data[i].nombre_producto,
+                                data[i].id + ',' + data[i].stock,
+                                false, false);
+                            $('#selProductos').append(newOption);
+                        }
+                        $('#btnAddProFactura').attr('disabled', true);
+                        $('#cantidadPro').val(1);
+                    },
+                    error: function () {
+                        lanzarNotificacion('fa fa-exclamation-triangle','Error Inesperado','Por favor, consulte con el administrador.')
+                    }
+                });
+            }
+
+
+            function existeEnFactura(pkProducto){
+                for (let i = 0; i < pkAuxiliar.length; i++) {
+                    if (pkAuxiliar[i] == pkProducto){
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+
+            function limpiarDatosCliente() {
+                $('#nom').val('');
+                $('#ape').val('');
+                $('#dir').val('');
+                $('#tel').val('');
+                $('#email').val('');
+            }
+
+
+            function redondear2Dec(num) {
+                return Math.round(num * 100) / 100;
+            }
+
+
+            function lanzarNotificacion(icon, titulo, cuerpo) {
+                $('#tituloModal').html('<span aria-hidden="true" class="'+icon+'"></span><strong> '+titulo+'</strong>');
+                $('#cuerpoModal').html('<h4>'+cuerpo+'</h4>');
+                $('#notificacion').modal('show');
+            }
+        });
+    </script>
+
+{% endblock %}

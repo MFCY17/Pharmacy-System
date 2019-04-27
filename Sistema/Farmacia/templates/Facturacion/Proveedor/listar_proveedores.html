@@ -1,0 +1,67 @@
+{% extends 'Facturacion/base.html' %} {% block contenido %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2 class="efecto1">Lista proveedores</h2>
+                            <div style="text-align: right;">
+                                <a href="{% url 'reporteproveedores' %}" class="btn btn-primary" style="background-color: ##42a4f4; border-color: #69803e;">Reporte</a>
+                            </div>
+
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Ruc</th>
+                                        <th>Distribuidora</th>
+                                        <th>Empresa</th>
+                                        <!--<th>Nombre_responsable</th>-->
+                                        <th>Dirección</th>
+                                        <th>Teléfono empresa</th>
+                                        <!--<th>Telefono_responsable</th>-->
+                                        <!--<th>Email</th>-->
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if object_list %} {% for proveedor in object_list %}
+                                    <tr>
+                                        <td>{{ proveedor.ruc }}</td>
+                                        <td>{{ proveedor.distribuidora }}</td>
+                                        <td>{{ proveedor.empresa }}</td>
+                                        <!--<td>{{ proveedor.nombre_responsable }}</td>-->
+                                        <td>{{ proveedor.direccion }}</td>
+                                        <td>{{ proveedor.telefono_empresa }}</td>
+                                        <!--<td>{{ proveedor.telefono_responsable }}</td>-->
+                                        <!--<td>{{ proveedor.email }}</td>-->
+                                        <td>
+
+                                            <a href="{% url 'detalleproveedor' proveedor.id %}" class="btn btn-success"><i class="fa fa-eye"></i></a>
+                                            <a href="{% url 'editarproveedores' proveedor.id %}" class="btn btn-primary" style="background-color: #9fc33b; border-color: #69803e;"><i class="fa fa-pencil"></i></a>
+                                            <a href="{% url 'eliminarproveedores' proveedor.id %}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %} {% else %}
+                                    <th>
+                                        <td COLSPAN=7 style=" text-align: center;">"NO HAY REGISTROS PARA MOSTRAR" </td>
+                                    </th>
+                                    {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+        <!-- /page content -->
+        {% endblock contenido %}

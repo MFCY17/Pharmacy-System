@@ -1,0 +1,112 @@
+{% extends 'Facturacion/base.html' %} 
+{% block contenido %}
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="x_panel fondo-radial">
+        <div class="x_title">
+          <h2 class="efecto1">Reporte de Productos</h2>
+
+          <div class="clearfix"></div>
+        </div>
+        
+        <div class="input-group" style="left: 7px; max-width: 90%;">
+            <form action="{% url 'reporteventas' %}" method="get">
+                <strong>Seleccione un proveedor</strong>
+                <br />
+                {{ form.opciones }}
+
+                <a id="generarBtn" class="btn btn-primary" style="text-align: right; background-color: #50B44D; border-color: #69803e;">Aplicar</a>
+
+                <button type="submit" class="btn btn-primary pull-right" style="background-color: #9fc33b; border-color: #69803e;">
+                    <i class="fa fa-print"></i>Imprimir
+                </button>
+            </form>
+        </div>
+
+
+        <div class="x_content">
+            <br />
+
+            <table id="reporteProductos" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Nombre comercial</th>
+              <th>Nombre genérico</th>
+              <th>Fecha expiración</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+
+
+          <tbody>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+           
+               
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock contenido %}
+
+
+{% block javascript %}
+{{ block.super }}
+<script>
+    $('#generarBtn').click(function () {
+      var proveedor= $('#id_opciones').val();
+
+        $.ajax({
+          type: "POST",
+            url:'{% url 'generar_reporte_productos' %}',
+            data:{proveedor:proveedor},
+            success: function(result){
+                $('#reporteProductos tbody').empty();
+                $.each(result, function(idx, producto) {
+                    $('#reporteProductos').append('<tr><td>' + producto.nombreComercial + '</td><td>' + producto.nombreGenerico +
+                      '</td><td>' + producto.fechaExpiracion + '</td><td>' + producto.stock + '</td></tr>');
+
+                    fechaCaducidad();
+                    cantidadStock();
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.log(jqXHR);
+            }
+         });
+    });
+
+    function cantidadStock() {
+        var txt= $('#reporteProductos td:last').text();
+        if (txt <= 10) {
+            $('#reporteProductos td:last').css('color', 'red');
+        }
+    };
+
+    function fechaCaducidad() {
+        const diaMilis = 86400000;
+        var txt= $('#reporteProductos td:last').prev().text();
+        var fechaActual = new Date();
+        var fechaActualSinHora = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), fechaActual.getDate());
+        var fechaExpiracion= new Date(txt);
+        var result = fechaExpiracion - fechaActualSinHora;
+        result = Math.round(result / diaMilis);
+        if ( result <= 10 ) {
+            $('#reporteProductos td:last').prev().css('color', 'red');
+        }
+    };
+</script>
+
+{% endblock %}

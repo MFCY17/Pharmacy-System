@@ -1,0 +1,283 @@
+{% extends 'Facturacion/base.html' %} {% block contenido %} {% load crispy_forms_tags %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel fondo-radial">
+                <div class="x_title">
+                    <h2 class="efecto1">Nueva Compra</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                {% if messages %}
+                <div class="col-md-12col-sm-12 col-xs-12 " style="    color: #a82823;" align=" left">
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}" {% endif %} >
+                            {{ message }}
+                        </li>
+                            {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="x_content">
+                    <br />
+                    <form method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        {{ form.numCompra.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.numCompra }}
+                        <br /><br />
+
+                        {{ form.numFactura.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.numFactura }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        {{ form.fechaCompra.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.fechaCompra }}
+                        <br /><br />
+
+                        {{ form.proveedor.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.proveedor }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        Distribuidora:&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input id="distribuidora" type="text" name="distribuidora" readonly>
+                        <br /><br />
+
+                        {{ form.totalCompra.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.totalCompra }}
+                        <br /><br />
+
+                        {{ form.descripcion.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.descripcion }}
+                        <br /><br />
+
+                        <button id="add-detail" class="create-book btn btn-primary" type="button" name="button">Agregar detalle</button>
+
+                        <br /><br />
+
+                        <div class="form-group">
+                            <table id="productos" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="active">
+                                        <th class="text-center">Producto</th>
+                                        <th class="text-center">Descripcion</th>
+                                        <th class="text-center">Cantidad</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <br /><br />
+                        {{ form.comprobante.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.comprobante }}
+
+                        <div class="ln_solid"></div>
+
+                        Información del pago
+                        <br /><br />
+                        {{ form.formaPago.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.formaPago }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                        {{ form.plazoPago.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.plazoPago }}
+                        <br /><br />
+
+                        {{ form.estadoPago.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.estadoPago }}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        {{ form.fechaLimite.label }}&nbsp;&nbsp;&nbsp;&nbsp;
+                        {{ form.fechaLimite }}
+
+
+                        <div class="ln_solid"></div>
+
+                        Detalle de pagos
+                        <br /><br />
+
+
+
+                        {{ compra_pagos_form_set.management_form }}
+                        <table class="table" style="width: 50%">
+                            <thead>
+                                <tr>
+                                    <th>Valor de pago</th>
+                                    <th>Fecha de pago</th>
+                                </tr>
+                        </thead>
+                            <tbody>
+                                {% for pago_form in compra_pagos_form_set %}
+                                    <tr>
+                                        <td>{{ pago_form.valorPago }}</td>
+                                        <td>{{ pago_form.fechaPago }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <button id="add-item" type="button" class="btn btn-primary">Agregar</button>
+                        <button id="remove-item" type="button" class="btn btn-danger" style="display: none">Quitar</button>
+
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button type="submit" class="btn btn-primary" style="background-color: #9fc33b; border-color: #69803e;"><i class="fa fa-save" style="padding-right: 10px;top: -15px;"></i>Guardar</button>
+                                <a href="{% url 'listacompras' %}" class="btn btn-danger"><i class="fa fa-close" style="padding-right: 10px"></i>Cancelar</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+
+    <div id="modal" class="modal fade" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /page content -->
+
+{% endblock contenido %}
+
+{% block javascript %}
+{{ block.super }}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".create-book").modalForm({
+            formURL: "{% url 'agregardetallecompra' %}"
+            //$(this).modal.('show');
+        });
+
+        var productos = $('#productos').DataTable({
+            "data": [],
+            "columnDefs": [
+                {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<div class='text-center'><button class='btn btn-primary btnRemovePro btn-xs' title='Quitar detalle'>" +
+                        "<span aria-hiden='true' class='fa fa-trash'></span> Quitar</button></div>"
+                }
+            ],
+            "columns":[
+                { "data": "nombre_producto" },
+                { "data": "descripcion" },
+                { "data": "cantidad" },
+                { "data": null },
+            ]
+        });
+
+        $("#add-item").on("click", addItem);
+        $("#remove-item").on("click", removeItem);
+
+
+        $('#add-to-table').click(function () {
+            console.log("Ejecutando......");
+
+            var pkProducto = parseInt($('#id_producto').val().split(',')[0]);
+            var cantidad = $('#id_cantidad').val();
+                $.ajax({
+                    data:{'pkProducto':pkProducto, 'cantidad':cantidad},
+                    type:'POST',
+                    url:'{% url "agregarproductotabla" %}',
+                    success: function(data){
+                        productos.rows.add(data).draw(false);
+                    },
+                    error: function () {
+                        lanzarNotificacion('fa fa-exclamation-triangle','Error Inesperado','Por favor, consulte con el administrador.')
+                    }
+                });
+            });
+    });
+
+    function addItem() {
+        // Clonamos la ultima fila de la tabla
+        var newElement = $(".table tr:last").clone(true);
+        // Necesitamos aumentar en 1 el total de los formularios
+        // por eso obtenemos el total actual, debería ser 4
+        var total = $("#id_pago_set-TOTAL_FORMS").val();
+        // Cuando se usan formsets, los elementos del formulario
+        // son enumerados (id_item-0-rate, id_item-1-rate, etc.)
+        // entonces necesitamos que el nuevo elemento siga esa
+        // numeración
+        newElement.find(":input").each(function() {
+            var name = $(this).attr("name").replace("-" + (total-1) + "-", "-" + total + "-");
+            var id = "id_" + name;
+            // Seteamos los atributos y limpiamos los valores
+            //$(this).attr({"name": name, "id": id}).val("");
+            $(this).attr({"name": name, "id": id})
+            if (name.substring(name.length-9, name.length)=="valorPago") {
+                $(this).attr({"name": name, "id": id}).val("0");
+            }
+        });
+        // Aumentamos en 1 la cantidad de formularios en el formset
+        total++;
+        $("#id_pago_set-TOTAL_FORMS").val(total);
+        // Insertamos el nueva formulario al final
+        $(".table tr:last").after(newElement);
+        // Solo mostramos el botón para quitar si hay mas de un formulario
+        if (total > 1) {
+            $("#remove-item").show();
+        }
+    }
+
+    function removeItem() {
+        // Obtenemos el último formulario de la tabla
+        var lastElement = $(".table tr:last");
+        // Obtenemos el total de formularios ya que ahora tenemos
+        // que descontar un formulario
+        var total = $("#id_pago_set-TOTAL_FORMS").val();
+        $(lastElement).remove();
+        // Actualizamos el total de los formularios
+        total--;
+        $("#id_pago_set-TOTAL_FORMS").val(total);
+        // Solo mostrar el botón si existe por lo menos un formulario
+        if (total < 2) {
+            $("#remove-item").hide();
+        }
+    }
+
+</script>
+
+
+{% endblock %}

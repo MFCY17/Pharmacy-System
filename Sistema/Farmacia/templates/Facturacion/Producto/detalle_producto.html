@@ -1,0 +1,99 @@
+{% extends 'Facturacion/base.html' %} {% block contenido %} {% load static %}
+<script type="text/javascript" src="{%static 'javascript/validarjavascript.js'%}"></script>
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel fondo-radial">
+                <div class="x_title">
+                    <h2 class="efecto1">Detalle Producto</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="x_content">
+                    <table id="bootstrap-data-table" class="table table-bordered">
+
+                        <tbody>
+                            <tr class="success">
+                                <td><strong>Código</strong></td>
+                                <td>{{ producto.codigo_producto }}</td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Nombre comercial</strong></td>
+                                <td>{{ producto.nombre_producto }} </td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Nombre genérico</strong></td>
+                                <td>{{ producto.nombre_generico }}</td>
+                            </tr>
+                            <tr class="success">
+                                <td><strong>Casa comercial</strong></td>
+                                <td>{{ producto.casa_comercial }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Presentación</strong></td>
+                                <td>{{ producto.presentacion }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Categoría</strong></td>
+                                <td>{{ producto.categoria }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Fecha expiración</strong> </td>
+                                <td>{{ producto.fecha_expiracion }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Fecha elaboración</strong> </td>
+                                <td>{{ producto.fecha_elaboracion }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Descripcion</strong> </td>
+                                <td>{{ producto.detalle_producto }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Stock</strong> </td>
+                                <td>{{ producto.stock }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Valor compra</strong> </td>
+                                <td>{{ producto.valor_Compra }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Valor venta unitario</strong> </td>
+                                <td>{{ producto.precio_producto }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Valor venta cajas</strong> </td>
+                                <td>{{ producto.valor_venta_cajas }}</td>
+                            </tr>
+
+                            <tr class="success">
+                                <td><strong>Caja con descuento</strong> </td>
+                                <td>{{ producto.descuento }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div class="box-header with-border">
+                        <a href="{% url 'listaproductos' %}" class="btn btn-success">
+                            <span class="glyphicon glyphicon-chevron-left"></span> Regresar
+                        </a>
+
+                    </div>
+
+                    {% endblock contenido %}

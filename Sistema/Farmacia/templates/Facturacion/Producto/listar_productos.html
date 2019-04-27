@@ -1,0 +1,81 @@
+{% extends 'Facturacion/base.html' %} {% block contenido %}
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2 class="efecto1">Lista Productos</h2>
+                            <div style="text-align: right;">
+                                <a href="{% url 'reporteclientes' %}" class="btn btn-primary" style="background-color: #42a4f4; border-color: #69803e;">Reporte</a>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <!--<th>Codigo</th>-->
+                                        <th>Nombre comercial</th>
+                                        <th>Nombre generico</th>
+                                        <!--<th>Casa comercial</th>-->
+                                        <!--<th>Presentacion</th>-->
+                                        <!--<th>Categoria</th>-->
+                                        <th>Fecha expiracion</th>
+                                        <!--<th>Fecha elaboracion</th>-->
+                                        <!--<th>Descripcion</th>-->
+                                        <th>Stock</th>
+                                        <!--<th>Valor compra</th>-->
+                                        <th>Valor unitario</th>
+                                        <th>Valor cajas</th>
+                                        <th>Caja descuento</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if object_list %} {% for producto in object_list %}
+                                    <tr>
+                                        <!--<td>{{ producto.codigo_producto }} </td>-->
+                                        <td>{{ producto.nombre_producto }} </td>
+                                        <td>{{ producto.nombre_generico }} </td>
+                                        <!--<td> {{ producto.casa_comercial }} </td>-->
+                                        <!--<td> {{ producto.presentacion }} </td>-->
+                                        <!--<td> {{ producto.categoria }} </td>-->
+                                        <td> {{ producto.fecha_expiracion }} </td>
+                                        <!--<td> {{ producto.fecha_elaboracion }} </td>-->
+                                        <!--<td> {{ producto.descripcion }} </td>-->
+                                        <td> {{ producto.stock }} </td>
+                                        <!--<td> {{ producto.valor_Compra }} </td>-->
+                                        <td> {{ producto.precio_producto }} </td>
+                                        <td> {{ producto.valor_venta_cajas }} </td>
+                                        <td> {{ producto.descuento }} </td>
+                                        <td>
+                                            <!--  <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> Ver </a> -->
+                                            <a href="{% url 'detalleproducto' producto.id %}" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
+                                            <a href="{% url 'editarproductos' producto.id %}" class="btn btn-primary btn-xs" style="background-color: #9fc33b; border-color: #69803e;"><i class="fa fa-pencil"></i></a>
+                                            <a href="{% url 'eliminarproductos' producto.id %}" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %} {% else %}
+                                    <th>
+                                        <td COLSPAN=6 style=" text-align: center;">"NO HAY REGISTROS PARA MOSTRAR" </td>
+                                    </th>
+                                    {% endif %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+        {% endblock contenido %}
