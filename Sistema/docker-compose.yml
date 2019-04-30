@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mysql
+    container_name: pharmacy-db
+    environment:
+      MYSQL_DATABASE: FarmaciaPrueba
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/Sistema
+    ports:
+      - "8000:8000"
+    container_name: pharmacy-web
+    depends_on:
+      - db

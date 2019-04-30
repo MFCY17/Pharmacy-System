@@ -72,101 +72,101 @@ Image, Spacer)
 from .models import Empresa
 
 #API
-from .serializers import ClienteSerializer, ProveedorSerializer, CategoriaSerializer, PresentacionSerializer, ProductoSerializer
-from .serializers import DetalleFacturaSerializer, FacturaSerializer
-from rest_framework import  generics
+# from .serializers import ClienteSerializer, ProveedorSerializer, CategoriaSerializer, PresentacionSerializer, ProductoSerializer
+# from .serializers import DetalleFacturaSerializer, FacturaSerializer
+# from rest_framework import  generics
 from django.shortcuts import get_object_or_404
 
-class ClienteList(generics.ListCreateAPIView):
-	queryset = Cliente.objects.all()
-	serializer_class = ClienteSerializer
-
-	def get_object(self):
-		queryset = self.get_queryset()
-		obj = get_object_or_404(
-			queryset,
-			pk = self.kwargs['pk'],
-		)
-
-		return obj			
-
-class ProveedorList(generics.ListCreateAPIView):
-	queryset = Proveedor.objects.all()
-	serializer_class = ProveedorSerializer
-
-	def get_object(self):
-		queryset = self.get_queryset()
-		obj = get_object_or_404(
-			queryset,
-			pk = self.kwargs['pk'],
-		)
-
-		return obj			
-
-class ProductoList(generics.ListCreateAPIView):
-	queryset = Producto.objects.all()
-	serializer_class = ProductoSerializer
-
-	def get_object(self):
-		queryset = self.get_queryset()
-		obj = get_object_or_404(
-			queryset,
-			pk = self.kwargs['pk'],
-		)
-
-		return obj
-
-class CategoriaList(generics.ListCreateAPIView):
-	queryset = Categoria.objects.all()
-	serializer_class = CategoriaSerializer
-
-	def get_object(self):
-		queryset = self.get_queryset()
-		obj = get_object_or_404(
-			queryset,
-			pk = self.kwargs['pk'],
-		)
-
-		return obj
-
-class PresentacionList(generics.ListCreateAPIView):
-	queryset = Presentacion.objects.all()
-	serializer_class = PresentacionSerializer
-
-	def get_object(self):
-		queryset = self.get_queryset()
-		obj = get_object_or_404(
-			queryset,
-			pk = self.kwargs['pk'],
-		)
-
-		return obj
-
-class DetalleFacturaList(generics.ListCreateAPIView):
-	queryset = DetalleFactura.objects.all()
-	serializer_class = DetalleFacturaSerializer
-
-	def get_object(self):
-		queryset = self.get_queryset()
-		obj = get_object_or_404(
-			queryset,
-			pk = self.kwargs['pk'],
-		)
-
-		return obj
-
-class FacturaList(generics.ListCreateAPIView):
-	queryset = Factura.objects.all()
-	serializer_class = FacturaSerializer
-
-	def get_object(self):
-		queryset = self.get_queryset()
-		obj = get_object_or_404(
-			queryset,
-			pk = self.kwargs['pk'],
-		)
-
-		return obj
+# class ClienteList(generics.ListCreateAPIView):
+# 	queryset = Cliente.objects.all()
+# 	serializer_class = ClienteSerializer
+#
+# 	def get_object(self):
+# 		queryset = self.get_queryset()
+# 		obj = get_object_or_404(
+# 			queryset,
+# 			pk = self.kwargs['pk'],
+# 		)
+#
+# 		return obj
+#
+# class ProveedorList(generics.ListCreateAPIView):
+# 	queryset = Proveedor.objects.all()
+# 	serializer_class = ProveedorSerializer
+#
+# 	def get_object(self):
+# 		queryset = self.get_queryset()
+# 		obj = get_object_or_404(
+# 			queryset,
+# 			pk = self.kwargs['pk'],
+# 		)
+#
+# 		return obj
+#
+# class ProductoList(generics.ListCreateAPIView):
+# 	queryset = Producto.objects.all()
+# 	serializer_class = ProductoSerializer
+#
+# 	def get_object(self):
+# 		queryset = self.get_queryset()
+# 		obj = get_object_or_404(
+# 			queryset,
+# 			pk = self.kwargs['pk'],
+# 		)
+#
+# 		return obj
+#
+# class CategoriaList(generics.ListCreateAPIView):
+# 	queryset = Categoria.objects.all()
+# 	serializer_class = CategoriaSerializer
+#
+# 	def get_object(self):
+# 		queryset = self.get_queryset()
+# 		obj = get_object_or_404(
+# 			queryset,
+# 			pk = self.kwargs['pk'],
+# 		)
+#
+# 		return obj
+#
+# class PresentacionList(generics.ListCreateAPIView):
+# 	queryset = Presentacion.objects.all()
+# 	serializer_class = PresentacionSerializer
+#
+# 	def get_object(self):
+# 		queryset = self.get_queryset()
+# 		obj = get_object_or_404(
+# 			queryset,
+# 			pk = self.kwargs['pk'],
+# 		)
+#
+# 		return obj
+#
+# class DetalleFacturaList(generics.ListCreateAPIView):
+# 	queryset = DetalleFactura.objects.all()
+# 	serializer_class = DetalleFacturaSerializer
+#
+# 	def get_object(self):
+# 		queryset = self.get_queryset()
+# 		obj = get_object_or_404(
+# 			queryset,
+# 			pk = self.kwargs['pk'],
+# 		)
+#
+# 		return obj
+#
+# class FacturaList(generics.ListCreateAPIView):
+# 	queryset = Factura.objects.all()
+# 	serializer_class = FacturaSerializer
+#
+# 	def get_object(self):
+# 		queryset = self.get_queryset()
+# 		obj = get_object_or_404(
+# 			queryset,
+# 			pk = self.kwargs['pk'],
+# 		)
+#
+# 		return obj
 
 
 

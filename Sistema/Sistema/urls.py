@@ -90,7 +90,7 @@ from Farmacia.views import listar_reporte_productos
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    #Login 
+    #Login
     url(r'^$',login, {'template_name':'Facturacion/Login/login.html'},name='login'),
     url(r'^accounts/login',login, {'template_name':'Facturacion/Login/login.html'},name='login'),
     url(r'^logout/',logout_then_login, name='logout'),
@@ -183,7 +183,7 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    url(r'^api/v1/auth', include('rest_framework.urls', namespace = 'rest_framework')),
+    # url(r'^api/v1/auth', include('rest_framework.urls', namespace = 'rest_framework')),
     ]
 
 if settings.DEBUG:
