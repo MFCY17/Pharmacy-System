@@ -3,6 +3,7 @@
 import os, sys
 from django import forms
 #Cliente
+from .models import DetalleCompra
 from .models import Cliente
 #Proveedor
 from .models import Proveedor
@@ -331,6 +332,7 @@ class CompraForm(forms.ModelForm):
             'plazoPago',
             'estadoPago',
             'fechaLimite'
+
 		]
         labels ={
 			'numCompra' : 'Compra Nro.:',
@@ -360,7 +362,7 @@ class CompraForm(forms.ModelForm):
 class DetalleCompraForm(BSModalForm):
     class Meta:
         model = DetalleCompra
-        fields = ['producto', 'cantidad',]
+        fields = ['producto', 'cantidad','compra']
         labels = {'producto':'Producto: ', 'cantidad':'Cantidad: ',}
 
 

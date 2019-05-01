@@ -41,7 +41,7 @@ from .forms import CategoriaEditarForm
 from .models import Presentacion
 from .forms import PresentacionForm
 from .forms import PresentacionEditarForm
-#Usuario 
+#Usuario
 from django.contrib.auth.models import User
 from .forms import UsuarioForm
 from .forms import UsuarioEditarForm
@@ -64,8 +64,8 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 from .forms import ReporteProductosForm
 from bootstrap_modal_forms.generic import BSModalCreateView
-from reportlab.platypus import (BaseDocTemplate, PageTemplate, 
-NextPageTemplate, PageBreak, Frame, FrameBreak, Flowable, Paragraph, 
+from reportlab.platypus import (BaseDocTemplate, PageTemplate,
+NextPageTemplate, PageBreak, Frame, FrameBreak, Flowable, Paragraph,
 Image, Spacer)
 
 #PERFIL
@@ -172,7 +172,7 @@ from django.shortcuts import get_object_or_404
 
 # Create your views here.
 @login_required
-def base (request): 
+def base (request):
     return render(request,"Facturacion/base.html",{})
 ###########################################################
 @csrf_exempt
@@ -188,9 +188,9 @@ def validar_rol(request):
 			resultado= usuario.is_superuser
 	return HttpResponse(resultado)
 #Configuracion
-def perfil_empresa (request): 
+def perfil_empresa (request):
     return render(request,"Facturacion/Configuracion/perfil_empresa.html",{})
-def perfil_usuario (request): 
+def perfil_usuario (request):
     return render(request,"Facturacion/Configuracion/perfil_usuario.html",{})
 
 class PerfilEmpresa(SuccessMessageMixin,CreateView):
@@ -242,7 +242,7 @@ def eliminar_clientes(request, id_cliente):
 
 class DetalleCliente(DetailView):
 	model = Cliente
-	template_name = 'Facturacion/Cliente/detalle_cliente.html'	
+	template_name = 'Facturacion/Cliente/detalle_cliente.html'
 ######################################################################################################
 #Proveedor
 class RegistroProveedor(SuccessMessageMixin,CreateView):
@@ -323,7 +323,7 @@ def eliminar_productos(request, id_producto):
 		producto.delete()
 		return redirect('listaproductos')
 	return render(request, 'Facturacion/Producto/eliminar_producto.html', {'producto':producto})
-	
+
 class ActualizarProductos(UpdateView):
 	model = Producto
 	form_class = ProductoEditarForm
@@ -341,7 +341,7 @@ class RegistroCategoria(SuccessMessageMixin,CreateView):
 	form_class = CategoriaForm
 	success_url = reverse_lazy('categoria')
 	success_message = 'Categoria registrada con exito'
-	
+
 def listar_categorias(request):
 	lista_categorias = Categoria.objects.all()
 	contexto = {'categorias': lista_categorias}
@@ -369,7 +369,7 @@ def eliminar_categorias(request, id_categoria):
 		categoria.delete()
 		return redirect('listacategorias')
 	return render(request, 'Facturacion/Categoria/eliminar_categoria.html', {'categoria':categoria})
-	
+
 class ActualizarCategorias(UpdateView):
 	model = Categoria
 	form_class = CategoriaEditarForm
@@ -410,14 +410,14 @@ def eliminar_presentaciones(request, id_presentacion):
 		presentacion.delete()
 		return redirect('listapresentaciones')
 	return render(request, 'Facturacion/Presentacion/eliminar_presentacion.html', {'presentacion':presentacion})
-	
+
 class ActualizarPresentaciones(UpdateView):
 	model = Presentacion
 	form_class = PresentacionEditarForm
 	template_name = "Facturacion/Presentacion/editar_presentacion.html"
 	success_url = reverse_lazy('listapresentaciones')
 #######################################################################################################
-#Usuario 
+#Usuario
 class RegistroUsuario(SuccessMessageMixin,CreateView):
 	model = User
 	form_class = UsuarioForm
@@ -505,12 +505,12 @@ class DetalleCompra(DetailView):
 	template_name = 'Facturacion/Compra/detalle_compra.html'
 
 
-class AgregarDetalleCompra(BSModalCreateView): 
+class AgregarDetalleCompra(BSModalCreateView):
 	template_name = 'Facturacion/Compra/agregar_detalle_compra.html'
 	form_class = DetalleCompraForm
 	success_message = 'Producto agregado'
 	print ("LLamada al metodo del views.py")
-	success_url = reverse_lazy('compra') 
+	success_url = reverse_lazy('compra')
 
 
 @csrf_exempt
@@ -523,7 +523,7 @@ def agregaProductoTabla(request):
 		'pk': producto.pk,
 		'nombre_producto': producto.nombre_producto,
 		'cantidad': cantidad,
-	}] 
+	}]
     data = json.dumps(resul, cls=DjangoJSONEncoder)
     return HttpResponse(data, content_type='application/json')
 
@@ -767,7 +767,7 @@ class AnularFactura(DetailView):
 	template_name = 'Facturacion/Factura/anular_factura.html'
 
 #REPORTES
-def reporte_ventas (request): 
+def reporte_ventas (request):
     return render(request,"Facturacion/Reportes/reporte_ventas.html",{})
 
 @csrf_exempt
@@ -815,15 +815,15 @@ def inventario_serializer(venta):
 	return {'nombreco': inventario.nombre_producto, 'nombrege': inventario.nombre_generico,
     	 'fechaex': inventario.fecha_expiracion, 'stock': inventario.stock}
 
-class ReporteClientesPDF(View):  
-     
+class ReporteClientesPDF(View):
+
     def cabecera(self,pdf):
         archivo_imagen = settings.MEDIA_ROOT+'/Imagenes/farmacia1.png'
-        pdf.drawImage(archivo_imagen, 50, 740, 200, 80,preserveAspectRatio=True)  
+        pdf.drawImage(archivo_imagen, 50, 740, 200, 80,preserveAspectRatio=True)
         pdf.setFont("Helvetica", 16)
         pdf.drawString(300, 780, u"REPORTE DE CLIENTES")
-             
-    
+
+
     def tabla(self,pdf,y):
         encabezados = ('Cédula/Ruc', 'Nombres', 'Apellidos', 'Dirección', 'Teléfono')
         detalles = [(cliente.cedula, cliente.nombres, cliente.apellidos, cliente.direccion, cliente.telefono) for cliente in Cliente.objects.all()]
@@ -833,12 +833,12 @@ class ReporteClientesPDF(View):
                 #La primera fila(encabezados) va a estar centrada
                 ('ALIGN',(0,0),(3,0),'CENTER'),
                 #Los bordes de todas las celdas serán de color negro y con un grosor de 1
-                ('GRID', (0, 0), (-1, -1), 1, colors.black), 
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
                 #El tamaño de las letras de cada una de las celdas será de 10
                 ('FONTSIZE', (0, 0), (-1, -1), 10),
             ]
         ))
-        #Establecemos el tamaño de la hoja que ocupará la tabla 
+        #Establecemos el tamaño de la hoja que ocupará la tabla
         detalle_orden.wrapOn(pdf, 800, 600)
         #Definimos la coordenada donde se dibujará la tabla
         detalle_orden.drawOn(pdf, 60,y)
@@ -858,14 +858,14 @@ class ReporteClientesPDF(View):
         response.write(pdf)
         return response
 
-class ReporteProveedores(View):  
-     
+class ReporteProveedores(View):
+
     def cabecera(self,pdf):
         archivo_imagen = settings.MEDIA_ROOT+'/Imagenes/farmacia1.png'
-        pdf.drawImage(archivo_imagen, 50, 740, 200, 80,preserveAspectRatio=True)  
+        pdf.drawImage(archivo_imagen, 50, 740, 200, 80,preserveAspectRatio=True)
         pdf.setFont("Helvetica", 16)
-        pdf.drawString(300, 780, u"REPORTE DE PROVEEDORES")        
-    
+        pdf.drawString(300, 780, u"REPORTE DE PROVEEDORES")
+
     def tabla(self,pdf,y):
         encabezadospro = ('Ruc', 'Distribuidora', 'Empresa', 'Dirección', 'Teléfono empresa')
         detallespro = [(proveedor.ruc, proveedor.distribuidora, proveedor.empresa, proveedor.direccion, proveedor.telefono_empresa) for proveedor in Proveedor.objects.all()]
@@ -875,12 +875,12 @@ class ReporteProveedores(View):
                 #La primera fila(encabezados) va a estar centrada
                 ('ALIGN',(0,0),(3,0),'CENTER'),
                 #Los bordes de todas las celdas serán de color negro y con un grosor de 1
-                ('GRID', (0, 0), (-1, -1), 1, colors.black), 
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
                 #El tamaño de las letras de cada una de las celdas será de 10
                 ('FONTSIZE', (0, 0), (-1, -1), 10),
             ]
         ))
-        #Establecemos el tamaño de la hoja que ocupará la tabla 
+        #Establecemos el tamaño de la hoja que ocupará la tabla
         detalle_ordenpro.wrapOn(pdf, 500, 90)
         #Definimos la coordenada donde se dibujará la tabla
         detalle_ordenpro.drawOn(pdf, 20,y)
@@ -902,30 +902,30 @@ class ReporteProveedores(View):
 
 
 
-class ReporteVentasPDF(View):  
-     
+class ReporteVentasPDF(View):
+
     def cabecera(self,pdf):
         archivo_imagen = settings.MEDIA_ROOT+'/Imagenes/farmacia1.png'
-        pdf.drawImage(archivo_imagen, 50, 740, 200, 80,preserveAspectRatio=True)  
+        pdf.drawImage(archivo_imagen, 50, 740, 200, 80,preserveAspectRatio=True)
         pdf.setFont("Helvetica", 16)
-        pdf.drawString(300, 780, u"REPORTE DE VENTAS")              
-    
+        pdf.drawString(300, 780, u"REPORTE DE VENTAS")
+
     def tabla(self,pdf,y, fInicio, fFinal):
         encabezados = ('Factura N°', 'Cliente', 'Fecha', 'Total')
         detalles = [(factura.numero, factura.cliente.apellidos+ ' ' + factura.cliente.nombres, factura.fecha, factura.valorTotal) for factura in Factura.objects.filter(fecha__range=(fInicio, fFinal))]
-       
+
         detalle_orden = Table([encabezados] + detalles, colWidths=[2 * cm, 7 * cm, 6 * cm, 2.5 * cm,])
         detalle_orden.setStyle(TableStyle(
             [
                 #La primera fila(encabezados) va a estar centrada
                 ('ALIGN',(0,0),(3,0),'CENTER'),
                 #Los bordes de todas las celdas serán de color negro y con un grosor de 1
-                ('GRID', (0, 0), (-1, -1), 1, colors.black), 
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
                 #El tamaño de las letras de cada una de las celdas será de 10
                 ('FONTSIZE', (0, 0), (-1, -1), 10),
             ]
         ))
-        #Establecemos el tamaño de la hoja que ocupará la tabla 
+        #Establecemos el tamaño de la hoja que ocupará la tabla
         detalle_orden.wrapOn(pdf, 800, 600)
         #Definimos la coordenada donde se dibujará la tabla
         detalle_orden.drawOn(pdf, 60,y)
@@ -947,5 +947,5 @@ class ReporteVentasPDF(View):
         response.write(pdf)
         return response
 
-        
+
 
