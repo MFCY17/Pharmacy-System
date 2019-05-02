@@ -53,7 +53,6 @@ from Farmacia.views import ListarUsuarios
 from Farmacia.views import RegistroCategoria
 # Cliente
 from Farmacia.views import RegistroCliente
-from Farmacia.views import RegistroCompra
 # Presentacion
 from Farmacia.views import RegistroPresentacion
 # Producto
@@ -144,7 +143,7 @@ urlpatterns = [
     url(r'^editar_usuario/(?P<pk>\d+)/$', ActualizarUsuarios.as_view(), name='editarusuarios'),
     url(r'^eliminar_usuario/(?P<id_user>\d+)/$', views.eliminar_usuarios, name='eliminarusuarios'),
     # Compra
-   # url(r'^crear_compra/', RegistroCompra.as_view(), name='compra'),
+    # url(r'^crear_compra/', RegistroCompra.as_view(), name='compra'),
     url(r'^listar_compras/$', ListarCompras.as_view(), name='listacompras'),
     url(r'^editar_compra/(?P<pk>\d+)/$', ActualizarCompra.as_view(), name='editarcompra'),
     url(r'^eliminar_compra/(?P<id_compra>\d+)/$', views.eliminar_compra, name='eliminarcompra'),
@@ -178,8 +177,9 @@ urlpatterns = [
     url(r'^reporte__venta$', login_required(ReporteVentasPDF.as_view()), name="reporteventas"),
     url(r'^api/v1/', include('Farmacia.urls', namespace="Farmacia")),
     url(r'^listar_reporte_productos/$', listar_reporte_productos, name='listar_reporte_productos'),
-    #order purchase
+    # order purchase
     url(r'^create_purchase/$', views.create_purchase, name='crear_orden_compra'),
+    url(r'^add_detail_to_order_purchase/$', views.add_detail_to_order_purchase, name='agregar_detalle_a_orden_compra'),
 
 ]
 
