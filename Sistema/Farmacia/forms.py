@@ -362,7 +362,7 @@ class CompraForm(forms.ModelForm):
 class DetalleCompraForm(BSModalForm):
     class Meta:
         model = DetalleCompra
-        fields = ['producto', 'cantidad','compra']
+        fields = ['producto', 'cantidad']
         labels = {'producto':'Producto: ', 'cantidad':'Cantidad: ',}
 
 
