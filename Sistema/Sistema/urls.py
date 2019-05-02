@@ -35,7 +35,7 @@ from Farmacia.views import ActualizarUsuarios
 from Farmacia.views import AgregarDetalleCompra
 from Farmacia.views import AnularFactura
 from Farmacia.views import DetalleCliente
-from Farmacia.views import DetalleCompra
+from Farmacia.views import DetalleCompraView
 from Farmacia.views import DetallePago
 from Farmacia.views import DetalleProducto
 from Farmacia.views import DetalleProveedor
@@ -147,7 +147,7 @@ urlpatterns = [
     url(r'^listar_compras/$', ListarCompras.as_view(), name='listacompras'),
     url(r'^editar_compra/(?P<pk>\d+)/$', ActualizarCompra.as_view(), name='editarcompra'),
     url(r'^eliminar_compra/(?P<id_compra>\d+)/$', views.eliminar_compra, name='eliminarcompra'),
-    url(r'^detalle_compra/(?P<pk>\d+)/$', DetalleCompra.as_view(), name='detallecompra'),
+    url(r'^detalle_compra/(?P<pk>\d+)/$', DetalleCompraView.as_view(), name='detallecompra'),
     url(r'^cargar_proveedor/$', cargarProveedor, name='cargarproveedor'),
     url(r'^realizar_compra/$', realizarCompra, name='realizarcompra'),
     url(r'^agregar_detalle_compra/$', AgregarDetalleCompra.as_view(), name='agregardetallecompra'),

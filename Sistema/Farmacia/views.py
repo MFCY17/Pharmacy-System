@@ -18,7 +18,7 @@ from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.template.loader import get_template
@@ -36,7 +36,7 @@ from reportlab.platypus import Table, TableStyle
 from xhtml2pdf import pisa
 
 from Farmacia.forms import PagoForm
-from Farmacia.models import DetalleFactura
+from Farmacia.models import DetalleFactura, DetalleCompra
 from Farmacia.models import Factura
 from Farmacia.utils import link_callback
 from .forms import CategoriaEditarForm
@@ -549,7 +549,7 @@ class ListarCompras(ListView):
     template_name = "Facturacion/Compra/listar_compras.html"
 
 
-class DetalleCompra(DetailView):
+class DetalleCompraView(DetailView):
     model = Compra
     template_name = 'Facturacion/Compra/detalle_compra.html'
 
@@ -1022,7 +1022,58 @@ class ReporteVentasPDF(View):
         return response
 
 
+# Order purchase business
+
+
 def create_purchase(request):
     if request.POST:
-        print(request.POST)
+        if (request.POST.get('provider_select') is not None and
+                request.POST.get('order_number') is not None):
+            details_purchase = json.loads(request.POST.get('details_hidden'))
+            purchase = Compra()
+            provider = Proveedor.objects.get(id=request.POST.get('provider_select'))
+
+            purchase.descripcion = ''
+            purchase.estadoPago = request.POST.get('status')
+            purchase.fechaCompra = request.POST.get('purchase_date')
+            purchase.fechaLimite = request.POST.get('date_limit_to_pay')
+            purchase.formaPago = request.POST.get('how_to_pay_select')
+            purchase.numCompra = request.POST.get('order_number')
+            purchase.numFactura = request.POST.get('invoice_number')
+            purchase.plazoPago = request.POST.get('payment_deadline')
+            purchase.proveedor_id = provider.id
+            purchase.totalCompra = request.POST.get('purchase_total')
+            purchase.save()
+
+            for detail_purchase in details_purchase:
+                detail = DetalleCompra()
+                detail.cantidad = int(detail_purchase[u'detail_quantity'])
+                detail.compra_id = purchase.id
+                detail.producto_id = int(detail_purchase[u'product_id'])
+                detail.save()
+            messages.success(request, 'Orden de compra exitosa.')
+
+    details = []
+    providers = Proveedor.objects.all()
+    how_to_pay_list = ['CONTADO', 'CREDITO']
+    status = ['REGISTRADO', 'PAGADO']
+    products = Producto.objects.filter(stock__gte=0)
     return render(request, 'Facturacion/Compra/create_order_purchase.html', locals())
+
+
+@csrf_exempt
+def add_detail_to_order_purchase(request):
+    if request.POST:
+        product = Producto.objects.get(id=request.POST.get('product_id'))
+        detail_quantity = request.POST.get('detail_quantity')
+        if product is None and detail_quantity > 0:
+            return JsonResponse({})
+        detail_total = product.precio_producto * int(detail_quantity)
+        detail = {
+            "detail_quantity": detail_quantity,
+            "product_name": product.nombre_producto,
+            "product_price": product.precio_producto,
+            "detail_total": detail_total,
+            "product_id": product.id
+        }
+    return JsonResponse(detail)
